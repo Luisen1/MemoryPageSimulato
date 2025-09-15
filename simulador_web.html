@@ -82,12 +82,21 @@
             display: block;
         }
 
+        .memory-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            margin: 20px auto;
+            max-width: 1000px;
+            flex-wrap: wrap;
+        }
+
         .memory-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            max-width: 500px;
-            margin: 20px auto;
+            gap: 15px;
+            max-width: 600px;
         }
 
         .memory-frame {
@@ -97,11 +106,13 @@
             justify-content: center;
             align-items: center;
             border: 3px solid #333;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: bold;
-            font-size: 0.9em;
+            font-size: 1.1em;
             transition: all 0.3s ease;
             cursor: pointer;
+            min-height: 120px;
+            padding: 10px;
         }
 
         .memory-frame.free {
@@ -132,6 +143,31 @@
         .memory-frame.terminated {
             background: #fd79a8;
             color: white;
+        }
+
+        /* Estilos para los colores de la leyenda */
+        .legend-color.free {
+            background: #e9ecef;
+        }
+
+        .legend-color.new {
+            background: #ffeaa7;
+        }
+
+        .legend-color.ready {
+            background: #74b9ff;
+        }
+
+        .legend-color.running {
+            background: #00b894;
+        }
+
+        .legend-color.waiting {
+            background: #fdcb6e;
+        }
+
+        .legend-color.terminated {
+            background: #fd79a8;
         }
 
         .controls {
@@ -284,23 +320,35 @@
 
         .legend {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 20px 0;
+            flex-direction: column;
+            gap: 12px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            min-width: 150px;
+        }
+
+        .legend h3 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 1.1em;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            padding: 5px;
         }
 
         .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
             border: 2px solid #333;
+            flex-shrink: 0;
         }
 
         @media (max-width: 768px) {
@@ -321,9 +369,39 @@
                 font-size: 1em;
             }
             
+            .memory-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
             .memory-grid {
                 grid-template-columns: repeat(2, 1fr);
+                max-width: 350px;
+                gap: 12px;
+            }
+
+            .memory-frame {
+                min-height: 100px;
+                font-size: 1em;
+            }
+
+            .legend {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                min-width: auto;
                 max-width: 300px;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .memory-container {
+                max-width: 900px;
+            }
+            
+            .memory-grid {
+                max-width: 550px;
             }
         }
 
@@ -341,53 +419,56 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎓 Simulador de Paginación de Memoria</h1>
+            <h1> Simulador de Paginación de Memoria</h1>
             <p>Versión Interactiva - Sistema Operativo - Aprendizaje Visual</p>
         </div>
 
         <div class="tabs">
             <button class="tab active" onclick="showTab('simulation')">🖥️ Simulación</button>
-            <button class="tab" onclick="showTab('learning')">📚 Aprender</button>
+            <button class="tab" onclick="showTab('learning')">Conceptos Paginacion de Memoria</button>
             <button class="tab" onclick="showTab('statistics')">📊 Estadísticas</button>
         </div>
 
         <div id="simulation" class="tab-content active">
-            <h2 style="text-align: center; margin-bottom: 20px;">💾 Memoria Física (16 Marcos de 4KB)</h2>
+            <h2 style="text-align: center; margin-bottom: 30px;">💾 Memoria Física (16 Marcos de 4KB)</h2>
             
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-color free"></div>
-                    <span>Libre</span>
+            <div class="memory-container">
+                <div class="memory-grid" id="memoryGrid">
+                    <!-- Los marcos se generarán dinámicamente -->
                 </div>
-                <div class="legend-item">
-                    <div class="legend-color new"></div>
-                    <span>Nuevo</span>
+                
+                <div class="legend">
+                    <h3>🎨 Estados</h3>
+                    <div class="legend-item">
+                        <div class="legend-color free"></div>
+                        <span>LIBRE</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color new"></div>
+                        <span>NUEVO</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color ready"></div>
+                        <span>LISTO</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color running"></div>
+                        <span>EJECUTANDO</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color waiting"></div>
+                        <span>ESPERANDO</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color terminated"></div>
+                        <span>TERMINADO</span>
+                    </div>
                 </div>
-                <div class="legend-item">
-                    <div class="legend-color ready"></div>
-                    <span>Listo</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color running"></div>
-                    <span>Ejecutando</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color waiting"></div>
-                    <span>Esperando</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color terminated"></div>
-                    <span>Terminado</span>
-                </div>
-            </div>
-
-            <div class="memory-grid" id="memoryGrid">
-                <!-- Los marcos se generarán dinámicamente -->
             </div>
 
             <div class="controls">
-                <button class="btn success" onclick="createProcess()">➕ Crear Proceso</button>
-                <button class="btn" onclick="startAutoSimulation()">🎯 Simulación Automática</button>
+                <button class="btn success" onclick="createProcess()">Crear Proceso</button>
+                <button class="btn" onclick="startAutoSimulation()">Simulación Automática</button>
                 <button class="btn warning" onclick="stopSimulation()">⏹️ Detener</button>
                 <button class="btn danger" onclick="resetSimulation()">🔄 Reiniciar</button>
             </div>
