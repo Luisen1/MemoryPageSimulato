@@ -1,1 +1,0 @@
-# Vistas e interfaz gráfica
